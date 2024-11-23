@@ -1,1 +1,51 @@
+#include <Servo.h>
 
+const int trigPin = 9;
+const int echoPin = 10;
+const int servoPin = 6;
+const int SERVOMOTOR1 = 7;
+const int MGSENSOR = 11;
+Servo myServo;
+
+void setup() {
+Serial.begin(9600);
+
+pinMode(trigPin, OUTPUT);
+pinMode(echoPin, INPUT);
+
+myServo.attach(servoPin);
+pinMode(SERVOMOTOR1, OUTPUT);
+pinMode(MGSENSOR, INPUT);
+myServo.attach(SERVOMOTOR1);
+
+}
+
+void loop() {
+long duration, distance;
+digitalWrite(trigPin, LOW);
+delayMicroseconds(2);
+digitalWrite(trigPin, HIGH);
+delayMicroseconds(10);
+digitalWrite(trigPin, LOW);
+
+duration = pulseIn(echoPin, HIGH);
+distance = duration * 0.0344 / 2;
+
+Serial.print("Distancia: "); 
+Serial.print(distance); 
+Serial.println(" cm");
+if (distance <= 10) {
+
+myServo.write(180);
+delay(1000);
+myServo.write(0);
+delay(1000);
+
+}
+if(digitalRead(MGSENSOR)==HIGH){
+myServo.write(180);
+delay(3000);
+myServo.write(0);
+delay(3000); }
+delay(200);
+}
